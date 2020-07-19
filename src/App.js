@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import Navbar from './components/navbar'
-import NewsCard from './components/cards'
+import NewsCardRow from './components/cardRow'
 // import List from './components/list'
 import Inflist from './components/infscroller'
 
@@ -12,9 +12,9 @@ function App() {
     <div className="App">
       
       <Navbar/>
-      <NewsCard /> 
+      {/* <NewsCard /> 
       <NewsCard />
-      <NewsCard />
+      <NewsCard /> */}
       <Inflist />
     </div>
   );
