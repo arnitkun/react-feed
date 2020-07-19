@@ -1,6 +1,8 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import NewsCardRow from './cardRow'
+
 const style = {
   height: 30,
   border: "1px solid green",
@@ -27,7 +29,6 @@ class Inflist extends React.Component {
     return (
       <div>
 
-        <hr />
         <InfiniteScroll
           dataLength={this.state.items.length}
           next={this.fetchMoreData}
@@ -35,9 +36,10 @@ class Inflist extends React.Component {
           loader={<h4>Loading...</h4>}
         >
           {this.state.items.map((i, index) => (
-            <div style={style} key={index}>
-              div - #{index}
-            </div>
+            // <div style={style} key={index}>
+            //   div - #{index}
+            // </div>
+            <NewsCardRow Headline1 = {index} Headline2 = {index+1} Headline3 = {index+2}/>
           ))}
         </InfiniteScroll>
       </div>
