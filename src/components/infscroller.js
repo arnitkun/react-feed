@@ -15,6 +15,9 @@ class Inflist extends React.Component {
     items: Array.from({ length: 20 })
   };
 
+  componentDidMount(){
+    this.setState(this.props)
+  }
   fetchMoreData = () => {
     // a fake async api call like which sends
     // 20 more records in 1.5 secs
@@ -23,6 +26,7 @@ class Inflist extends React.Component {
         items: this.state.items.concat(Array.from({ length: 20 }))
       });
     }, 1500);
+    console.log(this.props)
   };
 
   render() {
@@ -30,16 +34,17 @@ class Inflist extends React.Component {
       <div>
 
         <InfiniteScroll
-          dataLength={this.state.items.length}
+          dataLength={this.props.data.totalResults}
           next={this.fetchMoreData}
           hasMore={true}
           loader={<h4>Loading...</h4>}
         >
-          {this.state.items.map((i, index) => (
+          {this.props.data.articles.map((article, articlenumber) => (
             // <div style={style} key={index}>
             //   div - #{index}
             // </div>
-            <NewsCardRow Headline1 = {index} Headline2 = {index+1} Headline3 = {index+2}/>
+            // <NewsCardRow card_1_info = {index} Headline2 = {index+1} Headline3 = {index+2}/>
+            <NewsCardRow card_1_info = {article}/>
           ))}
         </InfiniteScroll>
       </div>
