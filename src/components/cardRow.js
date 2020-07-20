@@ -7,21 +7,26 @@ import '../index.css';
 const {Meta} = Card;
 
 class NewsCardRow extends Component{
+  
 
     render() {
         return (
             <div className="site-card-wrapper">
-    <Row gutter={8}>
-      <Col span={12}>
-      <Card 
-      hoverable
-      // cover={<img alt="image" src={}/>}
-      title={this.props.card_1_info.title} bordered={true}>
-                <div >Source: {this.props.card_1_info.source.name}
-                </div>
-                {<img class="card-image" alt="Loading..." src={this.props.card_1_info.urlToImage}/>}
-            </Card>
-      </Col>
+              <Row gutter={8}>
+                <Col span={12}>
+                  <div className="card">
+                    <Card 
+                      hoverable
+                      title={this.props.card_1_info.title} bordered={true}
+                      >
+                      <div >
+                        Source: {this.props.card_1_info.source.name}
+                      </div>
+                      {<img className="card-image" alt="Loading..." src={this.props.card_1_info.urlToImage}/>}
+                      
+                    </Card>
+                  </div>
+                </Col>
        {/* <Col span={12}>
          <Card title="Card title" bordered={true}>
          <div >Headline: {this.props.Headline2}
@@ -38,7 +43,9 @@ class NewsCardRow extends Component{
       </Col> */}
     </Row>
   </div>
-        )
+        ) 
+        
+      
     }
 }
 
