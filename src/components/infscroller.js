@@ -1,15 +1,8 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Modal,Empty} from 'antd'
+import {Empty} from 'antd'
 
 import NewsCardRow from './cardRow'
-
-const style = {
-  height: 30,
-  border: "1px solid green",
-  margin: 6,
-  padding: 8
-};
 
 class Inflist extends React.Component {
   constructor(props){
@@ -24,6 +17,10 @@ class Inflist extends React.Component {
   // componentDidMount(){
   //   this.setState(this.props)
   // }
+
+  componentDidUpdate(prevProps){ 
+    
+  }
 
   handleView = () => {
     if(this.state.detailsVisible === false){
@@ -42,7 +39,12 @@ class Inflist extends React.Component {
             // </div>
             // <NewsCardRow card_1_info = {index} Headline2 = {index+1} Headline3 = {index+2}/>
             <NewsCardRow card_1_info = {article} onClick={this.handleViewChange}/>
+            
           ))}
+
+          {/* {this.state.news.data.articles.forEach((article, index) => {
+            <NewsCardRow card_1_info = {article[index]} onClick={this.handleViewChange}/>
+          })} */}
         </InfiniteScroll>
       </div>
       )
@@ -68,10 +70,11 @@ class Inflist extends React.Component {
   }
 
   handleViewChange = () => {
+    console.log("clicked!")
     if(this.state.detailsVisible == false){
-      this.state.detailsVisible = true
+      this.setState( {detailsVisible: true})
     } else {
-      this.state.detailsVisible = false
+      this.setState( {detailsVisible:false})
     }
   }
 
@@ -83,7 +86,7 @@ class Inflist extends React.Component {
   //   }, 1500);
   // };
 
-  getNews = () => {
+  handleGetNews = () => {
       var allurl = 'https://newsapi.org/v2/everything?sources=engadget&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
      
       let data = fetch(allurl);
