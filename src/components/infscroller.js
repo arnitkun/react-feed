@@ -9,7 +9,8 @@ class Inflist extends React.Component {
     super(props)
       this.state = {
         detailsVisible:false,
-        news:{}
+        news:{},
+        page:1
       };
   }
  
@@ -19,14 +20,15 @@ class Inflist extends React.Component {
 
   componentDidUpdate(prevProps){
     if(this.props.source !== prevProps.source) {
-      this.parseUrl(this.props.source)
-    }
+      this.parseUrl(this.props.source, this.state.page)
+      }
   }
-  parseUrl = (param) =>{
-    console.log("source in parse:" + param)
+
+  parseUrl = (param, page) =>{
+    console.log("source in parse:" + param + " page number:" + page)
     let url = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey=8bcdc13d04f144d38b2e837242ebff7d' 
     if(param != ""){
-      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&pagesize=40&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
+      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&pagesize=40&page='+page+'&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
     }
     console.log("url parsed! New url = " + url)
     this.updateNews(url)
@@ -42,7 +44,18 @@ class Inflist extends React.Component {
     }).then(n => {
       this.setState({news:n})
     })
-    
+  }
+
+  isMoreNews = (page) => {
+    let totalpages = this.state.news.totalResults/this.state.news.articles.length;
+    console.log("page: "+page+" totalpages: "+totalpages)
+    console.log(page<totalpages)
+    // this.setState({totalpages:totalpages})
+    if(page < totalpages){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   updateNews = (url) => {
@@ -63,14 +76,14 @@ class Inflist extends React.Component {
           <div>
           <InfiniteScroll
             dataLength={this.state.news.totalResults}
-            next={this.getNews}
-            hasMore={this.state.news.articles.length<this.state.news.totalResults}
+            next={this.updateNews()}
+            hasMore={this.isMoreNews(this.state.page)}
             loader={<h4>Loading...</h4>}
             endMessage={<h4>No more news. Please refresh or select a source from the navigation bar.</h4>}
           >
             {this.state.news.articles.map((article, articlenumber) => (
   
-              <NewsCardRow card_1_info = {article} onClick={this.handleViewChange}/>
+              <NewsCardRow card_1_info = {article } onClick={this.handleViewChange}/>
               
             ))}
           </InfiniteScroll>
