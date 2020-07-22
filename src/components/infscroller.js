@@ -1,51 +1,95 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Modal,Empty} from 'antd'
+import {Empty} from 'antd'
 
 import NewsCardRow from './cardRow'
-
-const style = {
-  height: 30,
-  border: "1px solid green",
-  margin: 6,
-  padding: 8
-};
 
 class Inflist extends React.Component {
   constructor(props){
     super(props)
       this.state = {
         detailsVisible:false,
-        news:this.props
+        news:{},
+        page:1
       };
-    
+  }
+ 
+  componentDidMount(){
+    this.getNews();
   }
 
-  // componentDidMount(){
-  //   this.setState(this.props)
-  // }
+  componentDidUpdate(prevProps){
+    if(this.props.source !== prevProps.source) {
+      this.parseUrl(this.props.source, this.state.page)
+      }
+  }
+
+  parseUrl = (param, page) =>{
+    console.log("source in parse:" + param + " page number:" + page)
+    let url = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey=8bcdc13d04f144d38b2e837242ebff7d' 
+    if(param != ""){
+      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&pagesize=40&page='+page+'&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
+    }
+    console.log("url parsed! New url = " + url)
+    this.updateNews(url)
+  }
+
+  getNews = () => {
+    console.log("Getting top news")
+    var topurl = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
+   
+    let data = fetch(topurl);
+    data.then(res => {
+      return res.json();
+    }).then(n => {
+      this.setState({news:n})
+    })
+  }
+
+  isMoreNews = (page) => {
+    let totalpages = this.state.news.totalResults/this.state.news.articles.length;
+    console.log("page: "+page+" totalpages: "+totalpages)
+    console.log(page<totalpages)
+    // this.setState({totalpages:totalpages})
+    if(page < totalpages){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  updateNews = (url) => {
+    let data = fetch(url);
+    data.then(res => {
+      return res.json();
+    }).then(n => {
+      this.setState({news:n})
+    })
+  }
 
   handleView = () => {
     if(this.state.detailsVisible === false){
-      return(
-        <div>
-        <InfiniteScroll
-          dataLength={this.state.news.data.totalResults}
-          next={this.getNews}
-          hasMore={this.state.news.data.articles.length<this.state.news.data.totalResults}
-          loader={<h4>Loading...</h4>}
-          endMessage={<h4>No more news. Please refresh or select a source from the navigation bar.</h4>}
-        >
-          {this.state.news.data.articles.map((article, articlenumber) => (
-            // <div style={style} key={index}>
-            //   div - #{index}
-            // </div>
-            // <NewsCardRow card_1_info = {index} Headline2 = {index+1} Headline3 = {index+2}/>
-            <NewsCardRow card_1_info = {article} onClick={this.handleViewChange}/>
-          ))}
-        </InfiniteScroll>
-      </div>
-      )
+      if(!this.state.news.articles){
+        return(<div>{<h4>Loading...</h4>}</div>)
+      } else {
+        return(
+          <div>
+          <InfiniteScroll
+            dataLength={this.state.news.totalResults}
+            next={this.updateNews()}
+            hasMore={this.isMoreNews(this.state.page)}
+            loader={<h4>Loading...</h4>}
+            endMessage={<h4>No more news. Please refresh or select a source from the navigation bar.</h4>}
+          >
+            {this.state.news.articles.map((article, articlenumber) => (
+  
+              <NewsCardRow card_1_info = {article } onClick={this.handleViewChange}/>
+              
+            ))}
+          </InfiniteScroll>
+        </div>
+        )
+      }
     } else{
       return(
         <div>
@@ -68,22 +112,15 @@ class Inflist extends React.Component {
   }
 
   handleViewChange = () => {
+    console.log("clicked!")
     if(this.state.detailsVisible == false){
-      this.state.detailsVisible = true
+      this.setState( {detailsVisible: true})
     } else {
-      this.state.detailsVisible = false
+      this.setState( {detailsVisible:false})
     }
   }
 
-  // fetchMoreData = () => {
-  //   setTimeout(() => {
-  //     this.setState({
-  //       items: this.state.items.concat(Array.from({ length: 20 }))
-  //     });
-  //   }, 1500);
-  // };
-
-  getNews = () => {
+  handleGetNews = () => {
       var allurl = 'https://newsapi.org/v2/everything?sources=engadget&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
      
       let data = fetch(allurl);
