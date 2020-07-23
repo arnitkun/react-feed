@@ -7,7 +7,20 @@ import '../index.css';
 const {Meta} = Card;
 
 class NewsCardRow extends Component{
-  
+  constructor(props){
+    super(props)
+      
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick = () => {
+    if(this.props.detailsCardStatus === false){
+      this.props.ToggleCard(true);
+      this.props.setCardNumber(this.props.cardNumber)
+    } else {
+      this.props.ToggleCard(false);
+    }
+  }
 
     render() {
         return (
@@ -22,8 +35,8 @@ class NewsCardRow extends Component{
                       <div >
                         Source: {this.props.card_1_info.source.name}
                       </div>
-                      {<img className="card-image" alt="Loading..." src={this.props.card_1_info.urlToImage}/>}
-                      
+                      {<img className="card-image" alt="Loading..." src={this.props.card_1_info.urlToImage} onClick = {this.handleClick}/>}
+                      card number:{this.props.cardNumber}
                     </Card>
                   </div>
                 </Col>
