@@ -3,6 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {Empty} from 'antd'
 
 import NewsCardRow from './cardRow'
+import DetailsCard from './DetailedCard'
 
 
 const apikey = 'a0acf24072e74fa3908b5b09b9e5bded'
@@ -138,18 +139,7 @@ class Inflist extends React.Component {
     } else{
       return(
         <div>
-            <Empty
-                  image={this.state.articles[this.state.articleSelected].urlToImage}
-                  imageStyle={{
-                   height: 60,
-                  }}
-                  description={
-                    <span>
-                     Details page
-                      </span>
-                  }
-  >
-  </Empty>,
+            <DetailsCard data={this.state.articles[this.state.articleSelected]}/>
         </div>
       )
     }
