@@ -8,6 +8,7 @@ import '../index.css';
 class Navbar extends Component {
     constructor(){
         super()
+        
     this.handleChange = this.handleChange.bind(this);
     }
 
