@@ -20,9 +20,8 @@ render(){
                     <div><h4>Source: {this.props.data.source.name}</h4></div>}
 
                 <div>
-                  {this.props.data.content && this.props.data.content}
+                  {this.props.data.content? this.props.data.content : this.props.data.description}<a href={this.props.data.url}>Read More</a>
                 </div>
-                <div><a href={this.props.data.url}>Read More</a></div>
                 
             </div>
             
