@@ -1,6 +1,5 @@
 import React from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import {Empty} from 'antd'
+import InfiniteScroll from "react-infinite-scroller";
 
 import NewsCardRow from './cardRow'
 import DetailsCard from './DetailedCard'
@@ -66,8 +65,10 @@ class Inflist extends React.Component {
     })
   }
 
-  isMoreNews = (page) => {
+  isMoreNews = () => {
+    let page = (this.state.page)
     let totalpages = this.state.totalResults/this.state.articles.length;
+    
     console.log("page: "+page+" totalpages: "+totalpages)
     console.log(page<totalpages)
     // this.setState({totalpages:totalpages})
@@ -92,7 +93,9 @@ class Inflist extends React.Component {
     })
   }
 
-  getMoreNews = (param, page) => {
+  getMoreNews = () => {
+      let param = this.props.source;
+      let page = this.state.page
     console.log("getting more data!!!!!")
     let nextPage = page + 1
     let url = 'https://newsapi.org/v2/everything?sources='+param+'&pagesize=40&page='+nextPage+'&apiKey='+apikey
@@ -105,7 +108,6 @@ class Inflist extends React.Component {
       this.setState({articles:newNews,
                     page:nextPage})
     })
-
     
   }
 
@@ -116,22 +118,58 @@ class Inflist extends React.Component {
       if(!this.state.articles){
         return(<div>{<h4>Loading...</h4>}</div>)
       } else {
+        var items = []
+        for(let i = 0; i < this.state.articles.length; i+=3){
+          // items.push(
+          //   <NewsCardRow 
+            
+          //   card_1_info = {this.state.articles[i]} cardNumber1 = {i} 
+          //   setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+
+          //   card_2_info = {this.state.articles[i+1]} cardNumber2 = {i+1} 
+          //   setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+
+          //   card_3_info = {this.state.articles[i+2]} cardNumber3 = {i+2} 
+          //   setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+          //   />
+          // )
+
+        }
+        
         return(
-          <div>
-          <InfiniteScroll
+          <div className="infinite-scroll-component">
+          {/* <InfiniteScroll
             dataLength={this.state.articles.length}
             scrollThreshold={100}
-            next={()=>this.getMoreNews(this.props.source, this.state.page)}
-            hasMore={()=>this.isMoreNews(this.state.page)}
+            next={()=>this.getMoreNews}
+            hasMore={()=>this.isMoreNews}
             loader={<h4>Loading...</h4>}
             endMessage={<h4>No more news. Please refresh or select a source from the navigation bar.</h4>}
           >
-            {this.state.articles.map((article, articleNumber) => (
+            {this.state.articles.map((article, articleNumber, articles) => (
   
-              <NewsCardRow card_1_info = {article} cardNumber = {articleNumber} 
-              setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}/>
-              
+              <NewsCardRow card_1_info = {articles[articleNumber]} cardNumber = {articleNumber} 
+              setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+              />
+             
             ))}
+            {items}
+          </InfiniteScroll> */}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={this.getMoreNews}
+            hasMore={this.isMoreNews}
+            loader={<div className="loader" key={0}> Loading...</div>}
+            >
+              {this.state.articles.map((article, articleNumber, articles) => (
+  
+                  <NewsCardRow card_1_info = {articles[articleNumber]} cardNumber = {articleNumber} 
+                  setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+                  />
+ 
+                ))}
+
+
           </InfiniteScroll>
         </div>
         )
