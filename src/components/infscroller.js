@@ -28,6 +28,7 @@ class Inflist extends React.Component {
   }
 
   setCardNumber = (cardNumber) => {
+    console.log("setting card number: " + cardNumber)
     this.setState({
       articleSelected:cardNumber
     })
@@ -71,7 +72,6 @@ class Inflist extends React.Component {
     
     console.log("page: "+page+" totalpages: "+totalpages)
     console.log(page<totalpages)
-    // this.setState({totalpages:totalpages})
     if(page < totalpages){
       return true;
     }else{
@@ -87,8 +87,8 @@ class Inflist extends React.Component {
       let newNews = n.articles
       this.setState({articles:newNews,
                     page:1,
-                  totalResults: n.totalResults,
-                detailsVisible:false
+                    totalResults: n.totalResults,
+                    detailsVisible:false
               })
     })
   }
@@ -120,54 +120,30 @@ class Inflist extends React.Component {
       } else {
         var items = []
         for(let i = 0; i < this.state.articles.length; i+=3){
-          // items.push(
-          //   <NewsCardRow 
+          items.push(
+            <NewsCardRow 
             
-          //   card_1_info = {this.state.articles[i]} cardNumber1 = {i} 
-          //   setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+            card_1_info = {this.state.articles[i]} cardNumber1 = {i} 
+            setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
 
-          //   card_2_info = {this.state.articles[i+1]} cardNumber2 = {i+1} 
-          //   setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+            card_2_info = {this.state.articles[i+1]} cardNumber2 = {i+1} 
+            setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
 
-          //   card_3_info = {this.state.articles[i+2]} cardNumber3 = {i+2} 
-          //   setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
-          //   />
-          // )
+          />
+          )
 
         }
         
         return(
           <div className="infinite-scroll-component">
-          {/* <InfiniteScroll
-            dataLength={this.state.articles.length}
-            scrollThreshold={100}
-            next={()=>this.getMoreNews}
-            hasMore={()=>this.isMoreNews}
-            loader={<h4>Loading...</h4>}
-            endMessage={<h4>No more news. Please refresh or select a source from the navigation bar.</h4>}
-          >
-            {this.state.articles.map((article, articleNumber, articles) => (
-  
-              <NewsCardRow card_1_info = {articles[articleNumber]} cardNumber = {articleNumber} 
-              setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
-              />
-             
-            ))}
-            {items}
-          </InfiniteScroll> */}
+            
           <InfiniteScroll
             pageStart={0}
             loadMore={this.getMoreNews}
             hasMore={this.isMoreNews}
             loader={<div className="loader" key={0}> Loading...</div>}
             >
-              {this.state.articles.map((article, articleNumber, articles) => (
-  
-                  <NewsCardRow card_1_info = {articles[articleNumber]} cardNumber = {articleNumber} 
-                  setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
-                  />
- 
-                ))}
+              {items}
 
 
           </InfiniteScroll>
