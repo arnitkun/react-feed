@@ -1,14 +1,17 @@
 import React from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import {Empty} from 'antd'
+import InfiniteScroll from "react-infinite-scroller";
 
 import NewsCardRow from './cardRow'
+import DetailsCard from './DetailedCard'
 
+
+const apikey = 'a0acf24072e74fa3908b5b09b9e5bded'
 class Inflist extends React.Component {
   constructor(props){
     super(props)
       this.state = {
         detailsVisible:false,
+        articleSelected:null,
         news:{},
         page:1
       };
@@ -16,6 +19,19 @@ class Inflist extends React.Component {
  
   componentDidMount(){
     this.getNews();
+  }
+
+  ToggleDetailsCard = (cardStatus) => {
+    this.setState({
+      detailsVisible:cardStatus,
+    })
+  }
+
+  setCardNumber = (cardNumber) => {
+    console.log("setting card number: " + cardNumber)
+    this.setState({
+      articleSelected:cardNumber
+    })
   }
 
   componentDidUpdate(prevProps){
@@ -26,31 +42,36 @@ class Inflist extends React.Component {
 
   parseUrl = (param, page) =>{
     console.log("source in parse:" + param + " page number:" + page)
-    let url = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey=8bcdc13d04f144d38b2e837242ebff7d' 
+    let url = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey='+apikey 
     if(param != ""){
-      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&pagesize=40&page='+page+'&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
+      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&pagesize=40&page='+page+'&apiKey='+apikey
     }
     console.log("url parsed! New url = " + url)
-    this.updateNews(url)
+    this.changeNewsSource(url)
   }
 
   getNews = () => {
     console.log("Getting top news")
-    var topurl = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
+    
+    let topurl = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey='+apikey
    
     let data = fetch(topurl);
     data.then(res => {
       return res.json();
     }).then(n => {
-      this.setState({news:n})
+      this.setState({articles: n.articles,
+                      totalResults: n.totalResults,
+                      detailsVisible:false
+                      })
     })
   }
 
-  isMoreNews = (page) => {
-    let totalpages = this.state.news.totalResults/this.state.news.articles.length;
+  isMoreNews = () => {
+    let page = (this.state.page)
+    let totalpages = this.state.totalResults/this.state.articles.length;
+    
     console.log("page: "+page+" totalpages: "+totalpages)
     console.log(page<totalpages)
-    // this.setState({totalpages:totalpages})
     if(page < totalpages){
       return true;
     }else{
@@ -58,34 +79,73 @@ class Inflist extends React.Component {
     }
   }
 
-  updateNews = (url) => {
+  changeNewsSource = (url) => {
     let data = fetch(url);
     data.then(res => {
       return res.json();
     }).then(n => {
-      this.setState({news:n})
+      let newNews = n.articles
+      this.setState({articles:newNews,
+                    page:1,
+                    totalResults: n.totalResults,
+                    detailsVisible:false
+              })
     })
   }
 
+  getMoreNews = () => {
+      let param = this.props.source;
+      let page = this.state.page
+    console.log("getting more data!!!!!")
+    let nextPage = page + 1
+    let url = 'https://newsapi.org/v2/everything?sources='+param+'&pagesize=40&page='+nextPage+'&apiKey='+apikey
+    let data = fetch(url);
+    data.then(res => {
+      return res.json();
+    }).then(n => {
+      let newNews = JSON.parse(JSON.stringify(this.state.articles))
+      Array.prototype.push.apply(newNews, n.articles)
+      this.setState({articles:newNews,
+                    page:nextPage})
+    })
+    
+  }
+
+  
+
   handleView = () => {
     if(this.state.detailsVisible === false){
-      if(!this.state.news.articles){
+      if(!this.state.articles){
         return(<div>{<h4>Loading...</h4>}</div>)
       } else {
+        var items = []
+        for(let i = 0; i < this.state.articles.length; i+=3){
+          items.push(
+            <NewsCardRow 
+            
+            card_1_info = {this.state.articles[i]} cardNumber1 = {i} 
+            setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+
+            card_2_info = {this.state.articles[i+1]} cardNumber2 = {i+1} 
+            setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+
+          />
+          )
+
+        }
+        
         return(
-          <div>
+          <div className="infinite-scroll-component">
+            
           <InfiniteScroll
-            dataLength={this.state.news.totalResults}
-            next={this.updateNews()}
-            hasMore={this.isMoreNews(this.state.page)}
-            loader={<h4>Loading...</h4>}
-            endMessage={<h4>No more news. Please refresh or select a source from the navigation bar.</h4>}
-          >
-            {this.state.news.articles.map((article, articlenumber) => (
-  
-              <NewsCardRow card_1_info = {article } onClick={this.handleViewChange}/>
-              
-            ))}
+            pageStart={0}
+            loadMore={this.getMoreNews}
+            hasMore={this.isMoreNews}
+            loader={<div className="loader" key={0}> Loading...</div>}
+            >
+              {items}
+
+
           </InfiniteScroll>
         </div>
         )
@@ -93,19 +153,7 @@ class Inflist extends React.Component {
     } else{
       return(
         <div>
-            <Empty
-                  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                  imageStyle={{
-                   height: 60,
-                  }}
-                  description={
-                    <span>
-                     Details page
-                      </span>
-                  }
-  >
-    
-  </Empty>,
+            <DetailsCard data={this.state.articles[this.state.articleSelected]}/>
         </div>
       )
     }
@@ -120,21 +168,7 @@ class Inflist extends React.Component {
     }
   }
 
-  handleGetNews = () => {
-      var allurl = 'https://newsapi.org/v2/everything?sources=engadget&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
-     
-      let data = fetch(allurl);
-      data.then(res => {
-        return res.json();
-      }).then(n => {
-
-        let newNews = Object.assign({},this.state.news,  n)
-
-        this.setState({news:newNews})
-      })
-      
-  };
-
+  
   
 
   render() {
