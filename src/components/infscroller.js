@@ -1,11 +1,15 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroller";
+import {Card, Col, Row} from 'antd';
 
-import NewsCardRow from './cardRow'
+import 'antd/dist/antd.css';
+import '../index.css';
+
+import NewsCard from './card'
 import DetailsCard from './DetailedCard'
 
 
-const apikey = 'a0acf24072e74fa3908b5b09b9e5bded'
+const apikey = 'a9b2fe117dde427095fcd65a9e9d0658'
 class Inflist extends React.Component {
   constructor(props){
     super(props)
@@ -121,15 +125,55 @@ class Inflist extends React.Component {
         var items = []
         for(let i = 0; i < this.state.articles.length; i+=3){
           items.push(
-            <NewsCardRow 
-            
-            card_1_info = {this.state.articles[i]} cardNumber1 = {i} 
-            setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+            <div className="site-card-wrapper">
+            <Row gutter={8}display="flex" >
+              <Col span={8} display="flex">
+                <div className="card">
+                  {this.state.articles[i] && <NewsCard 
+                    hoverable
+                    type="flex"
+                    cardInfo= {this.state.articles[i]}
+                    cardNumber={i}
+                    ToggleCard = {this.ToggleDetailsCard}
+                    setCardNumber = {this.setCardNumber}
+                    detailsCardStatus= {false}
+                    >
+                  </NewsCard>}
+                </div>
+              </Col>
 
-            card_2_info = {this.state.articles[i+1]} cardNumber2 = {i+1} 
-            setCardNumber = {this.setCardNumber} ToggleCard={this.ToggleDetailsCard} detailsCardStatus={this.state.detailsVisible}
+              <Col span={8} display="flex">
+                <div className="card">
+                  {this.state.articles[i+1] && <NewsCard 
+                    hoverable
+                    type="flex"
+                    cardInfo= {this.state.articles[i+1]}
+                    cardNumber={i+1}
+                    ToggleCard = {this.ToggleDetailsCard}
+                    setCardNumber = {this.setCardNumber}
+                    detailsCardStatus= {false}
+                    >
+                  </NewsCard>}
+                </div>
+              </Col>
 
-          />
+              { this.state.articles[i+2] && <Col span={8} display="flex">
+                <div className="card">
+                  <NewsCard 
+                    hoverable
+                    type="flex"
+                    cardInfo= {this.state.articles[i+2]}
+                    cardNumber={i+2}
+                    ToggleCard = {this.ToggleDetailsCard}
+                    setCardNumber = {this.setCardNumber}
+                    detailsCardStatus= {false}
+                    >
+                  </NewsCard>
+                </div>
+              </Col>}
+
+          </Row>
+        </div>
           )
 
         }
