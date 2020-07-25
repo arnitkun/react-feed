@@ -3,17 +3,22 @@ import React, {Component} from 'react';
 class DetailsCard extends Component{
     constructor(props){
         super(props)
-
+        this.state = {}
     }
 
+    // fetchRelatedNews = () => {
+    //     let useless = ['is', 'in', 'on', 'the', 'has', 'had', 'have', 'was', 'will', 'do', 'fail','to', ]
+    //     let keywords = this.props.title.split(" ");
+    // }
 render(){
+
         return(
             <div>
                 <div className="news-Title">
                     <h2>{this.props.data.title}</h2>
                 </div>
                 <div className="news-Image">
-                    <img alt="Image not found!" src={this.props.data.urlToImage}/> 
+                    <img alt="Image not found!" src={this.props.data.urlToImage} Object-fit="contain"/> 
                 </div>
 
                 {this.props.data.source.name && 
