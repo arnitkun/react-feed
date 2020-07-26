@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import moment from 'moment';
+import googleNewsPlaceHolder from './images/google-news.jpg'
 
 class DetailsCard extends Component{
     constructor(props){
@@ -20,40 +21,52 @@ class DetailsCard extends Component{
 
     fetchRelatedNews = (data) => {
     
-        let useless = ['is', 'in', 'on', 'the', 'has', 'had', 'have', 'was', 'will', 'do', 'fail','to','a','for', 'news']
-        // console.log( data)
+        // let useless = ['is', 'in', 'on', 'the', 'has', 'had', 'have', 'was', 'will', 'do', 'fail','to','a','for', 'news']
+
         let keywords = data.split(" ")
-        // keywords.filter( word => {
-        //      !useless.includes(word)
-        // });
-        console.log(keywords)
+
+        let sortedKeywords = keywords.sort( (a, b) => {
+            return b.length-a.length;
+        })
+
+        let chosenKeywords = sortedKeywords.slice(0, 3);
+        
+        console.log(chosenKeywords)
         let keys = ''
         keywords.forEach(element => {
             keys += element+"+"
         });
         
-        let url = 'https://newsapi.org/v2/everything?qInTitle='+ keys + '&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
+        let url = 'https://newsapi.org/v2/everything?qInTitle='+ keys + '&apiKey=628232939dc547e3a4c221fef8a21b9b'
          console.log(url)
         let dat = fetch(url);
         dat.then(response => {
             return response.json()
             }).then(res=>{
-                
-                this.setState({related:res})
+                if(this.props.data.title && res.articles[0] && res.articles[0].title) {
+                    if(this.props.data.title == res.articles[0].title){
+                        console.log("No related news!")
+                    }else {
+                        this.setState({related:res})
+                    }
+                }                
             })
     }
-render(){
 
+    componentDidMount(){
+        this.fetchRelatedNews(this.props.data.title)
+    }
+render(){
         return(
-            <div>
+            <div className="detailed-card">
                 <div className="news-Title" >
                     <h2>{this.props.data.title}</h2>
                 </div>
                 <div className="news-Image">
-                    {/* {this.props.data.urlToImage? 
-                        <img src={this.props.data.urlToImage} Object-fit="cover"/> : <img src='/images/google-news.jpg' Object-fit="cover"/>}  */}
+                    {this.props.data.urlToImage? 
+                        <img className="news-image" src={this.props.data.urlToImage} /> : <img className="placeholder" src={googleNewsPlaceHolder}/>} 
 
-<img src='/images/google-news.jpg' Object-fit="cover"/>
+                        
                 </div>
 
                 {this.props.data.source.name && 
