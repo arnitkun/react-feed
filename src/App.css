@@ -69,14 +69,14 @@ img {
     object-fit: contain;
 }
 
-.news-iamge {
-    height: 600px;
+.news-image {
+    height: 500px;
     width: auto;
     object-fit: contain;
 }
 
 .detailed-card {
-  height: 600px;
+  height: 500px;
   width: 100%;
 }
 
