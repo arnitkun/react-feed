@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
 import {Menu} from 'antd'
-
+import {Icon} from '@ant-design/compatible'
+import { CaretDownFilled } from '@ant-design/icons'
 
 
 import 'antd/dist/antd.css';
@@ -24,6 +25,11 @@ class Navbar extends Component {
         
     }
 
+    handleClose = () => {
+        console.log("closing card!")
+        this.props.onSourceChange("");
+    }
+
     getSources = () => {
         var source = 'https://newsapi.org/v2/sources?country=in&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
 
@@ -33,7 +39,6 @@ class Navbar extends Component {
                 
                 return response.json()
                 }).then(res=>{
-        // news = [...Object.values(res)]
                         res.sources.map( source => {
                             sourceArray.push(source)
                         })
@@ -51,6 +56,9 @@ class Navbar extends Component {
         return (
             <div className = "navbar">
                 <Menu mode="horizontal"  defaultSelectedKeys={['1']}>
+                <Menu.Item>  
+                    <Icon type="arrow-left" onClick={this.handleClose}/>
+                </Menu.Item>
                 <Menu.Item key="1" onClick = {() => {this.handleChange("")}}>Top News</Menu.Item>
                 <Menu.Item key="2"  onClick = {() => {this.handleChange("google-news-in")}}>Google News (India)</Menu.Item>
                 <Menu.Item key="3" onClick = {() => {this.handleChange("the-hindu")}}>The Hindu</Menu.Item>
