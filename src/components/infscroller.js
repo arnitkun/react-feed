@@ -1,7 +1,8 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroller";
+import Ellipsis from '@bit/joshk.react-spinners-css.ellipsis';
 import {Card, Col, Row} from 'antd';
-
+import moment from 'moment';
 import 'antd/dist/antd.css';
 import '../index.css';
 
@@ -9,7 +10,7 @@ import NewsCard from './card'
 import DetailsCard from './DetailedCard'
 
 
-const apikey = 'a9b2fe117dde427095fcd65a9e9d0658'
+const apikey = '628232939dc547e3a4c221fef8a21b9b'
 class Inflist extends React.Component {
   constructor(props){
     super(props)
@@ -46,9 +47,9 @@ class Inflist extends React.Component {
 
   parseUrl = (param, page) =>{
     console.log("source in parse:" + param + " page number:" + page)
-    let url = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey='+apikey 
+    let url = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=20&apiKey='+apikey 
     if(param != ""){
-      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&pagesize=40&page='+page+'&apiKey='+apikey
+      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&language=en&pagesize=20&page='+page+'&apiKey='+apikey
     }
     console.log("url parsed! New url = " + url)
     this.changeNewsSource(url)
@@ -57,7 +58,7 @@ class Inflist extends React.Component {
   getNews = () => {
     console.log("Getting top news")
     
-    let topurl = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey='+apikey
+    let topurl = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=20&apiKey='+apikey
    
     let data = fetch(topurl);
     data.then(res => {
@@ -102,7 +103,7 @@ class Inflist extends React.Component {
       let page = this.state.page
     console.log("getting more data!!!!!")
     let nextPage = page + 1
-    let url = 'https://newsapi.org/v2/everything?sources='+param+'&pagesize=40&page='+nextPage+'&apiKey='+apikey
+    let url = 'https://newsapi.org/v2/everything?sources='+param+'&language=en&pagesize=20&page='+nextPage+'&apiKey='+apikey
     let data = fetch(url);
     data.then(res => {
       return res.json();
@@ -120,13 +121,13 @@ class Inflist extends React.Component {
   handleView = () => {
     if(this.state.detailsVisible === false){
       if(!this.state.articles){
-        return(<div>{<h4>Loading...</h4>}</div>)
+        return(<div><Ellipsis color="#be97e8" /></div>)
       } else {
         var items = []
         for(let i = 0; i < this.state.articles.length; i+=3){
           items.push(
             <div className="site-card-wrapper">
-            <Row gutter={8}display="flex" >
+            <Row gutter={8} display="flex" >
               <Col span={8} display="flex">
                 <div className="card">
                   {this.state.articles[i] && <NewsCard 
@@ -137,7 +138,7 @@ class Inflist extends React.Component {
                     ToggleCard = {this.ToggleDetailsCard}
                     setCardNumber = {this.setCardNumber}
                     detailsCardStatus= {false}
-                    >
+                    > 
                   </NewsCard>}
                 </div>
               </Col>
