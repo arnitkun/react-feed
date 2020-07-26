@@ -10,7 +10,7 @@ import NewsCard from './card'
 import DetailsCard from './DetailedCard'
 
 
-const apikey = '628232939dc547e3a4c221fef8a21b9b'
+const apikey = '61061b00b0f84d02960a12e70accdc16'
 class Inflist extends React.Component {
   constructor(props){
     super(props)
@@ -47,7 +47,7 @@ class Inflist extends React.Component {
 
   parseUrl = (param, page) =>{
     console.log("source in parse:" + param + " page number:" + page)
-    let url = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=20&apiKey='+apikey 
+    let url = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=40&apiKey='+apikey 
     if(param != ""){
       url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&language=en&pagesize=20&page='+page+'&apiKey='+apikey
     }
@@ -58,7 +58,7 @@ class Inflist extends React.Component {
   getNews = () => {
     console.log("Getting top news")
     
-    let topurl = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=20&apiKey='+apikey
+    let topurl = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=40&apiKey='+apikey
    
     let data = fetch(topurl);
     data.then(res => {
@@ -103,7 +103,13 @@ class Inflist extends React.Component {
       let page = this.state.page
     console.log("getting more data!!!!!")
     let nextPage = page + 1
-    let url = 'https://newsapi.org/v2/everything?sources='+param+'&language=en&pagesize=20&page='+nextPage+'&apiKey='+apikey
+    // console.log("source:" + param)
+    var url = ''
+    if(param=="" || param == " "){
+       url = 'https://newsapi.org/v2/top-headlines?&language=en&pagesize=20&page='+nextPage+'&apiKey='+apikey
+    } else {
+       url = 'https://newsapi.org/v2/everything?sources='+param+'&language=en&pagesize=20&page='+nextPage+'&apiKey='+apikey
+    }
     let data = fetch(url);
     data.then(res => {
       return res.json();
