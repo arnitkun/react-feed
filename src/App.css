@@ -63,6 +63,22 @@ img {
   background-size:contain
 }
 
+.placeholder {
+    height: 300px;
+    width: 300px;
+    object-fit: contain;
+}
+
+.news-iamge {
+    height: 600px;
+    width: auto;
+    object-fit: contain;
+}
+
+.detailed-card {
+  height: 600px;
+  width: 100%;
+}
 
 @keyframes App-logo-spin {
   from {
