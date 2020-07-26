@@ -34,12 +34,35 @@
 .site-card-wrapper {
   padding: 10px;
   background: #ececec;
+  display: flex;
 }
 
 .card-image {
+  /* object-fit: scale-down; */
   width: 100%;
-  height:100%
+  height:100%;
+  background-size:contain
 }
+
+.news-content {
+  font-family: "BlinkMacSystemFont"
+}
+
+.news-title {
+  padding-top:50px;
+  font-family: "BlinkMacSystemFont";
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  width:100%;
+  height: auto;
+  /* max-height: 60%;
+  max-width: 60%; */
+  background-size:contain
+}
+
 
 @keyframes App-logo-spin {
   from {
