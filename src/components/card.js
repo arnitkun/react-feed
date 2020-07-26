@@ -1,5 +1,7 @@
 import React, { Component} from 'react';
 import {Card, Col, Row} from 'antd';
+import moment from 'moment'
+import googleNewsPlaceHolder from './images/google-news.jpg'
 
 import 'antd/dist/antd.css';
 import '../index.css';
@@ -23,20 +25,30 @@ class NewsCard extends Component{
     }
   }
 
+    getElapsedTime = (d) => {
+      const format = "YYYY-MM-DD HH:mm:ss"
+      let elapsedtime = moment.utc(d).format(format)
+      let resp = moment(elapsedtime).fromNow()
+      return(resp)
+  }
+
   render(){
       return(
 
               <Card 
                 size="default"
+                className="custom-card"
                 hoverable
                 
                 title={this.props.cardInfo.title} bordered={true}
                 onClick = {this.handleClick}
                 >
-                 <div >
-                   Source: {this.props.cardInfo.source.name}
+                 <div className="news-content">
+                   {this.props.cardInfo.source.name} | {this.getElapsedTime(this.props.cardInfo.publishedAt)}
                  </div>
-                 {<img className="card-image" alt="Loading..." src={this.props.cardInfo.urlToImage} />}
+                 {this.props.cardInfo.urlToImage ? 
+                  <img className="card-image" alt="Loading..." src={this.props.cardInfo.urlToImage} /> :
+                  <img className="placeholder" src={googleNewsPlaceHolder}/>}
                  
               </Card>
       )
