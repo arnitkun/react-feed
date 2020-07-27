@@ -14,6 +14,7 @@ class Navbar extends Component {
         super()
         
     this.handleChange = this.handleChange.bind(this);
+    this.handleReset = this.handleReset.bind(this);
     }
 
     handleChange(source) {
@@ -25,11 +26,10 @@ class Navbar extends Component {
         
     }
 
-    handleClose = () => {
-        console.log("closing card!")
-        this.props.onSourceChange("");
+    
+    handleReset() {
+        this.props.handleClose();
     }
-
     getSources = () => {
         var source = 'https://newsapi.org/v2/sources?country=in&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
 
@@ -57,7 +57,7 @@ class Navbar extends Component {
             <div className = "navbar">
                 <Menu mode="horizontal"  defaultSelectedKeys={['1']}>
                 <Menu.Item>  
-                    <Icon type="arrow-left" onClick={this.handleClose}/>
+                    <Icon type="arrow-left" onClick={this.handleReset}/>
                 </Menu.Item>
                 <Menu.Item key="1" onClick = {() => {this.handleChange("")}}>Top News</Menu.Item>
                 <Menu.Item key="2"  onClick = {() => {this.handleChange("google-news-in")}}>Google News (India)</Menu.Item>
