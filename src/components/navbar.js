@@ -23,7 +23,6 @@ class Navbar extends Component {
         } else {
             this.props.onSourceChange(source);
         }
-        
     }
 
     
@@ -54,10 +53,10 @@ class Navbar extends Component {
     }
     render(){
         return (
-            <div className = "navbar">
+            <div className = "navbar" position="fixed">
                 <Menu mode="horizontal"  defaultSelectedKeys={['1']}>
-                <Menu.Item>  
-                    <Icon type="arrow-left" onClick={this.handleReset}/>
+                <Menu.Item onClick={this.handleReset}>  
+                    <Icon type="arrow-left" />
                 </Menu.Item>
                 <Menu.Item key="1" onClick = {() => {this.handleChange("")}}>Top News</Menu.Item>
                 <Menu.Item key="2"  onClick = {() => {this.handleChange("google-news-in")}}>Google News (India)</Menu.Item>
