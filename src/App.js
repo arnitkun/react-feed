@@ -9,10 +9,15 @@ class App extends Component{
   constructor(){
     super()
     this.state = {
-      source:""      
+      source:"",
+      key: Math.random()      
     }
   }
 
+  handleClose = () => {
+    console.log("closing card!")
+    this.setState({key: Math.random()})
+}
 
   handleSource = (newSource="engadget") => {
     console.log("source changed! Source = " + newSource);
@@ -24,8 +29,8 @@ class App extends Component{
     
     return (
     <div className="App">
-      <Navbar onSourceChange = {this.handleSource}/>
-        <Inflist source={this.state.source}/>
+      <Navbar onSourceChange = {this.handleSource} handleClose={this.handleClose}/>
+        <Inflist source={this.state.source} random_key={this.state.key}/>
       </div>
     );
 }
