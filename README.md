@@ -8,7 +8,7 @@ A news browsing application, built in react and node.
  - Uses NewsApi
  - Supports a number of sources from NewsApi, along with the current top news
  - Shows news in an infinte scroll
- - clicking on a news shows further details
+ - clicking on a news shows further details, with an option to check the original source website.
 
 ## Running:
 
@@ -22,6 +22,7 @@ A news browsing application, built in react and node.
  - Needs a NewsApi Api key (though the application has a developer key coded in )
  - Region limited: country set to `in`, sources limited to 3 as provided by Newsapi for the country in this case.
  - NewsApi limited developer account, can not fetch more than 100 articles at one time.
+ - Newsapi provides every articles with content(textual) which is truncated at 200 characters. Thus the "detailed" views othe news does not contain the full text content.
  - language set to English `en`
  - Source without images are supplied with a logo of the source.
  - Clicking on a source while the "detailed view" for a news is open will reload the feed, except for `Top News` 
