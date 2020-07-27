@@ -9,14 +9,17 @@ import '../index.css';
 const {Meta} = Card;
 
 class NewsCard extends Component{
+
   constructor(props){
     super(props)
-      
     this.handleClick = this.handleClick.bind(this)
   }
 
+  /**
+   * Sets the status of detailed card and the card number to be shown
+   */
   handleClick = () => {
-    console.log("card CLicked!!!")
+    
     if(this.props.detailsCardStatus === false){
       this.props.ToggleCard(true);
       this.props.setCardNumber(this.props.cardNumber)
@@ -25,11 +28,15 @@ class NewsCard extends Component{
     }
   }
 
-    getElapsedTime = (d) => {
-      const format = "YYYY-MM-DD HH:mm:ss"
-      let elapsedtime = moment.utc(d).format(format)
-      let resp = moment(elapsedtime).fromNow()
-      return(resp)
+  /**
+   * Converts date to required format
+   * @param {date} d date in UTC format
+   */
+  getElapsedTime = (d) => {
+    const format = "YYYY-MM-DD HH:mm:ss"
+    let elapsedtime = moment.utc(d).format(format)
+    let resp = moment(elapsedtime).fromNow()
+    return(resp)
   }
 
   render(){
@@ -39,7 +46,6 @@ class NewsCard extends Component{
                 size="default"
                 className="custom-card"
                 hoverable
-                
                 title={this.props.cardInfo.title} bordered={true}
                 onClick = {this.handleClick}
                 >
