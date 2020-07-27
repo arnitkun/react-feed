@@ -133,7 +133,7 @@ class Inflist extends React.Component {
   handleView = () => {
     if(this.state.detailsVisible === false){
       if(!this.state.articles){
-        return(<div><Ellipsis color="#be97e8" /></div>)
+        return(<div class="center-screen"><Ellipsis color="#be97e8" /></div>)
       } else {
         var items = []
         for(let i = 0; i < this.state.articles.length; i+=3){
