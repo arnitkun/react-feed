@@ -30,4 +30,4 @@ A news browsing application, built in react and node.
 
 ## Customizing the App: 
 
-The region, language, available sources are all changeable.
+The region, language available, sources are all changeable. Right now one needs to manually change the parameters.
