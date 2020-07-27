@@ -1,14 +1,12 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import Ellipsis from '@bit/joshk.react-spinners-css.ellipsis';
 import {Spin, BackTop ,Col, Row} from 'antd';
 import moment from 'moment';
-import 'antd/dist/antd.css';
-import '../index.css';
-
 import NewsCard from './card'
 import DetailsCard from './DetailedCard'
 
+import 'antd/dist/antd.css';
+import '../index.css';
 
 const apikey = '61061b00b0f84d02960a12e70accdc16'
 class Inflist extends React.Component {
@@ -40,6 +38,21 @@ class Inflist extends React.Component {
     })
   }
 
+  handleViewChange = () => {
+    console.log("clicked!")
+    if(this.state.detailsVisible == false){
+      this.setState( {detailsVisible: true})
+    } else {
+      this.setState( {detailsVisible:false})
+    }
+  }
+  
+  /**
+   * Compares previous props to current props and sets the source and starting page.
+   * Also we compare the random "key" state variable here to re-render news feed.
+   * 
+   * @param {Object} prevProps The previous properties
+   */
   componentDidUpdate(prevProps){
     if(this.state.key != this.props.random_key){
       this.setState({key: this.props.random_key,
@@ -51,6 +64,7 @@ class Inflist extends React.Component {
       }
   }
 
+  
   parseUrl = (param) =>{
     console.log("source in parse:" + param + " page number:" + 1)
     let url = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=40&apiKey='+apikey 
@@ -61,6 +75,9 @@ class Inflist extends React.Component {
     this.changeNewsSource(url)
   }
 
+  /**
+   * Only for source = Top news
+   */
   getNews = () => {
     console.log("Getting top news")
     
@@ -90,6 +107,12 @@ class Inflist extends React.Component {
     }
   }
 
+  /**
+   * Runs whenever source is changed
+   * 
+   * @param {string} url url of changed source
+   * 
+   */
   changeNewsSource = (url) => {
     window.scrollTo(0,0);
     let data = fetch(url);
@@ -104,6 +127,7 @@ class Inflist extends React.Component {
               })
     })
   }
+
 
   getMoreNews = () => {
       let param = this.props.source;
@@ -130,11 +154,13 @@ class Inflist extends React.Component {
   }
 
   
-
   handleView = () => {
     if(this.state.detailsVisible === false){
       if(!this.state.articles){
-        return(<div class="center-screen"><Spin size="large"/></div>)
+        return(
+        <div class="center-screen">
+          <Spin size="large"/>
+        </div>)
       } else {
         var items = []
         for(let i = 0; i < this.state.articles.length; i+=3){
@@ -215,18 +241,6 @@ class Inflist extends React.Component {
       )
     }
   }
-
-  handleViewChange = () => {
-    console.log("clicked!")
-    if(this.state.detailsVisible == false){
-      this.setState( {detailsVisible: true})
-    } else {
-      this.setState( {detailsVisible:false})
-    }
-  }
-
-  
-  
 
   render() {
     return (
