@@ -1,7 +1,7 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import Ellipsis from '@bit/joshk.react-spinners-css.ellipsis';
-import {Card, Col, Row} from 'antd';
+import {Spin, BackTop ,Col, Row} from 'antd';
 import moment from 'moment';
 import 'antd/dist/antd.css';
 import '../index.css';
@@ -91,6 +91,7 @@ class Inflist extends React.Component {
   }
 
   changeNewsSource = (url) => {
+    window.scrollTo(0,0);
     let data = fetch(url);
     data.then(res => {
       return res.json();
@@ -133,7 +134,7 @@ class Inflist extends React.Component {
   handleView = () => {
     if(this.state.detailsVisible === false){
       if(!this.state.articles){
-        return(<div class="center-screen"><Ellipsis color="#be97e8" /></div>)
+        return(<div class="center-screen"><Spin size="large"/></div>)
       } else {
         var items = []
         for(let i = 0; i < this.state.articles.length; i+=3){
@@ -201,8 +202,7 @@ class Inflist extends React.Component {
             loader={<div className="loader" key={0}> Loading...</div>}
             >
               {items}
-
-
+              <BackTop />
           </InfiniteScroll>
         </div>
         )
