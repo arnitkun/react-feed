@@ -6,6 +6,7 @@ import Navbar from './components/navbar'
 import Inflist from './components/infscroller'
 
 class App extends Component{
+
   constructor(){
     super()
     this.state = {
@@ -14,11 +15,16 @@ class App extends Component{
     }
   }
 
+  /**
+   * Sets a random number as a key in state, used for reinitialzing component
+   */
   handleClose = () => {
     console.log("closing card!")
     this.setState({key: Math.random()})
 }
-
+  /**
+   * @param {string} newSource 
+  */
   handleSource = (newSource="engadget") => {
     console.log("source changed! Source = " + newSource);
     this.setState({source: newSource})
@@ -29,16 +35,18 @@ class App extends Component{
     
     return (
     <div className="App">
+      
       <div className="navbar">
-      <Navbar onSourceChange = {this.handleSource} handleClose={this.handleClose}/>
+        <Navbar onSourceChange = {this.handleSource} handleClose={this.handleClose}/>
       </div>
+
       <div>
-      <Inflist source={this.state.source} random_key={this.state.key}/>
+        <Inflist source={this.state.source} random_key={this.state.key}/>
       </div>
         
-      </div>
+    </div>
     );
-}
+  }
 }
 
 export default App;
