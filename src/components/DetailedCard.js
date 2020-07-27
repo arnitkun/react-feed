@@ -18,7 +18,13 @@ class DetailsCard extends Component{
         let dateFormatted = moment.utc(d).format(format)
         return dateFormatted
     }
-
+    
+    /**
+     * Function to fetch related news, takes 3 longest word from the title of current news and 
+     * provides them as a seatch query to NewsApi again.
+     * 
+     * @param {Object} data Object received from Newsapi, contains all information about a news
+     */
     fetchRelatedNews = (data) => {
     
         // let useless = ['is', 'in', 'on', 'the', 'has', 'had', 'have', 'was', 'will', 'do', 'fail','to','a','for', 'news']
@@ -56,8 +62,10 @@ class DetailsCard extends Component{
     componentDidMount(){
         this.fetchRelatedNews(this.props.data.title)
     }
-render(){
+
+    render(){
         return(
+
             <div className="detailed-card">
                 <div className="news-Title" >
                     <h2>{this.props.data.title}</h2>
@@ -65,22 +73,17 @@ render(){
                 <div className="news-Image">
                     {this.props.data.urlToImage? 
                         <img className="news-image" src={this.props.data.urlToImage} /> : <img className="placeholder" src={googleNewsPlaceHolder}/>} 
-
-                        
                 </div>
-
                 {this.props.data.source.name && 
                     <div className="news-content"><h3>
                         {this.props.data.source.name} | {this.props.data.publishedAt &&
                     this.formatDate(this.props.data.publishedAt)} </h3> </div>}
-
                 <div className="news-content">
                   {this.props.data.content? this.props.data.content.slice(0,199)+"... " : this.props.data.description}<a href={this.props.data.url}>Read More</a>
                 </div>
-                
             </div>
-            
         )
     }
 }
+
 export default DetailsCard;
