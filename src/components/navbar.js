@@ -2,8 +2,6 @@
 import React, {Component} from 'react';
 import {Menu} from 'antd'
 import {Icon} from '@ant-design/compatible'
-import { CaretDownFilled } from '@ant-design/icons'
-
 
 import 'antd/dist/antd.css';
 import '../index.css';
@@ -53,7 +51,7 @@ class Navbar extends Component {
         })
     }
 
-    
+
     render(){
         return (
             <div className = "navbar" position="fixed">
