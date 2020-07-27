@@ -18,7 +18,8 @@ class Inflist extends React.Component {
         detailsVisible:false,
         articleSelected:null,
         news:{},
-        page:1
+        page:1,
+        key: this.props.random_key
       };
   }
  
@@ -40,16 +41,21 @@ class Inflist extends React.Component {
   }
 
   componentDidUpdate(prevProps){
+    if(this.state.key != this.props.random_key){
+      this.setState({key: this.props.random_key,
+        detailsVisible: false})
+    }
     if(this.props.source !== prevProps.source) {
+      
       this.parseUrl(this.props.source, this.state.page)
       }
   }
 
-  parseUrl = (param, page) =>{
-    console.log("source in parse:" + param + " page number:" + page)
+  parseUrl = (param) =>{
+    console.log("source in parse:" + param + " page number:" + 1)
     let url = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=40&apiKey='+apikey 
     if(param != ""){
-      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&language=en&pagesize=20&page='+page+'&apiKey='+apikey
+      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&language=en&pagesize=20&page='+1+'&apiKey='+apikey
     }
     console.log("url parsed! New url = " + url)
     this.changeNewsSource(url)
