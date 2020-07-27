@@ -71,8 +71,8 @@ render(){
 
                 {this.props.data.source.name && 
                     <div className="news-content"><h3>
-                        {this.props.data.source.name}</h3> {this.props.data.publishedAt &&
-                    this.formatDate(this.props.data.publishedAt)} </div>}
+                        {this.props.data.source.name} | {this.props.data.publishedAt &&
+                    this.formatDate(this.props.data.publishedAt)} </h3> </div>}
 
                 <div className="news-content">
                   {this.props.data.content? this.props.data.content.slice(0,199)+"... " : this.props.data.description}<a href={this.props.data.url}>Read More</a>
