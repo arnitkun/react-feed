@@ -45,7 +45,8 @@
 }
 
 .news-content {
-  font-family: "BlinkMacSystemFont"
+  font-family: "BlinkMacSystemFont";
+  font-size: 16px;
 }
 
 .news-title {
@@ -63,6 +64,44 @@ img {
   background-size:contain
 }
 
+.placeholder {
+    height: 300px;
+    width: 300px;
+    object-fit: contain;
+}
+
+.news-image {
+    height: 500px;
+    width: auto;
+    object-fit: contain;
+}
+
+.detailed-card {
+  height: 500px;
+  width: 100%;
+}
+
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.site-back-top-basic {
+  color: rgba(64, 64, 64, 0.6);
+}
+[data-theme="dark"] .site-back-top-basic {
+  color: rgba(255,255,255,.45);
+}
+
+.navbar {
+  position: sticky;
+  top:0;
+  z-index: 999;
+}
 
 @keyframes App-logo-spin {
   from {

@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
 import {Menu} from 'antd'
-
+import {Icon} from '@ant-design/compatible'
+import { CaretDownFilled } from '@ant-design/icons'
 
 
 import 'antd/dist/antd.css';
@@ -13,6 +14,7 @@ class Navbar extends Component {
         super()
         
     this.handleChange = this.handleChange.bind(this);
+    this.handleReset = this.handleReset.bind(this);
     }
 
     handleChange(source) {
@@ -21,9 +23,12 @@ class Navbar extends Component {
         } else {
             this.props.onSourceChange(source);
         }
-        
     }
 
+    
+    handleReset() {
+        this.props.handleClose();
+    }
     getSources = () => {
         var source = 'https://newsapi.org/v2/sources?country=in&apiKey=8bcdc13d04f144d38b2e837242ebff7d'
 
@@ -33,7 +38,6 @@ class Navbar extends Component {
                 
                 return response.json()
                 }).then(res=>{
-        // news = [...Object.values(res)]
                         res.sources.map( source => {
                             sourceArray.push(source)
                         })
@@ -49,8 +53,11 @@ class Navbar extends Component {
     }
     render(){
         return (
-            <div className = "navbar">
+            <div className = "navbar" position="fixed">
                 <Menu mode="horizontal"  defaultSelectedKeys={['1']}>
+                <Menu.Item onClick={this.handleReset}>  
+                    <Icon type="arrow-left" />
+                </Menu.Item>
                 <Menu.Item key="1" onClick = {() => {this.handleChange("")}}>Top News</Menu.Item>
                 <Menu.Item key="2"  onClick = {() => {this.handleChange("google-news-in")}}>Google News (India)</Menu.Item>
                 <Menu.Item key="3" onClick = {() => {this.handleChange("the-hindu")}}>The Hindu</Menu.Item>

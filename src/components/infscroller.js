@@ -1,7 +1,8 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import {Card, Col, Row} from 'antd';
-
+import Ellipsis from '@bit/joshk.react-spinners-css.ellipsis';
+import {Spin, BackTop ,Col, Row} from 'antd';
+import moment from 'moment';
 import 'antd/dist/antd.css';
 import '../index.css';
 
@@ -9,7 +10,7 @@ import NewsCard from './card'
 import DetailsCard from './DetailedCard'
 
 
-const apikey = 'a9b2fe117dde427095fcd65a9e9d0658'
+const apikey = '61061b00b0f84d02960a12e70accdc16'
 class Inflist extends React.Component {
   constructor(props){
     super(props)
@@ -17,7 +18,8 @@ class Inflist extends React.Component {
         detailsVisible:false,
         articleSelected:null,
         news:{},
-        page:1
+        page:1,
+        key: this.props.random_key
       };
   }
  
@@ -39,16 +41,21 @@ class Inflist extends React.Component {
   }
 
   componentDidUpdate(prevProps){
+    if(this.state.key != this.props.random_key){
+      this.setState({key: this.props.random_key,
+        detailsVisible: false})
+    }
     if(this.props.source !== prevProps.source) {
+      
       this.parseUrl(this.props.source, this.state.page)
       }
   }
 
-  parseUrl = (param, page) =>{
-    console.log("source in parse:" + param + " page number:" + page)
-    let url = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey='+apikey 
+  parseUrl = (param) =>{
+    console.log("source in parse:" + param + " page number:" + 1)
+    let url = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=40&apiKey='+apikey 
     if(param != ""){
-      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&pagesize=40&page='+page+'&apiKey='+apikey
+      url = 'https://newsapi.org/v2/everything?sources='+this.props.source+'&language=en&pagesize=20&page='+1+'&apiKey='+apikey
     }
     console.log("url parsed! New url = " + url)
     this.changeNewsSource(url)
@@ -57,7 +64,7 @@ class Inflist extends React.Component {
   getNews = () => {
     console.log("Getting top news")
     
-    let topurl = 'https://newsapi.org/v2/top-headlines?country=in&pagesize=40&apiKey='+apikey
+    let topurl = 'https://newsapi.org/v2/top-headlines?country=in&language=en&pagesize=40&apiKey='+apikey
    
     let data = fetch(topurl);
     data.then(res => {
@@ -84,6 +91,7 @@ class Inflist extends React.Component {
   }
 
   changeNewsSource = (url) => {
+    window.scrollTo(0,0);
     let data = fetch(url);
     data.then(res => {
       return res.json();
@@ -102,7 +110,13 @@ class Inflist extends React.Component {
       let page = this.state.page
     console.log("getting more data!!!!!")
     let nextPage = page + 1
-    let url = 'https://newsapi.org/v2/everything?sources='+param+'&pagesize=40&page='+nextPage+'&apiKey='+apikey
+    // console.log("source:" + param)
+    var url = ''
+    if(param=="" || param == " "){
+       url = 'https://newsapi.org/v2/top-headlines?&language=en&pagesize=20&page='+nextPage+'&apiKey='+apikey
+    } else {
+       url = 'https://newsapi.org/v2/everything?sources='+param+'&language=en&pagesize=20&page='+nextPage+'&apiKey='+apikey
+    }
     let data = fetch(url);
     data.then(res => {
       return res.json();
@@ -120,13 +134,13 @@ class Inflist extends React.Component {
   handleView = () => {
     if(this.state.detailsVisible === false){
       if(!this.state.articles){
-        return(<div>{<h4>Loading...</h4>}</div>)
+        return(<div class="center-screen"><Spin size="large"/></div>)
       } else {
         var items = []
         for(let i = 0; i < this.state.articles.length; i+=3){
           items.push(
             <div className="site-card-wrapper">
-            <Row gutter={8}display="flex" >
+            <Row gutter={8} display="flex" >
               <Col span={8} display="flex">
                 <div className="card">
                   {this.state.articles[i] && <NewsCard 
@@ -137,7 +151,7 @@ class Inflist extends React.Component {
                     ToggleCard = {this.ToggleDetailsCard}
                     setCardNumber = {this.setCardNumber}
                     detailsCardStatus= {false}
-                    >
+                    > 
                   </NewsCard>}
                 </div>
               </Col>
@@ -188,8 +202,7 @@ class Inflist extends React.Component {
             loader={<div className="loader" key={0}> Loading...</div>}
             >
               {items}
-
-
+              <BackTop />
           </InfiniteScroll>
         </div>
         )
