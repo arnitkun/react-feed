@@ -29,8 +29,13 @@ class App extends Component{
     
     return (
     <div className="App">
+      <div className="navbar">
       <Navbar onSourceChange = {this.handleSource} handleClose={this.handleClose}/>
-        <Inflist source={this.state.source} random_key={this.state.key}/>
+      </div>
+      <div>
+      <Inflist source={this.state.source} random_key={this.state.key}/>
+      </div>
+        
       </div>
     );
 }
